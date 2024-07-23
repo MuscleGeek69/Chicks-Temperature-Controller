@@ -64,7 +64,7 @@ Once installed and operating, the app will automatically monitor and manage the 
 
 ## Warnings and Precautions
 
-Attention:
+### Attention:
 
 Device Connectivity: Make sure all temperature sensors and light switches have a reliable connection to Home Assistant. If devices disconnect while the lights are turned on, the app may not operate properly, allowing the lights to remain on and overheat the chicks.
 Regular Monitoring: To protect your chicks' safety and well-being, review the app's functioning and device connectivity on a consistent basis.
