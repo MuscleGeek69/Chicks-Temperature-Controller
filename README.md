@@ -40,11 +40,11 @@ chicks_temperature_controller:
 
 ## Parameters
 
-- ***Temperature_sensors:*** Temperature entity that will be used to read the temperature inside chicken 
+- ***Temperature_sensors:*** Temperature entity that will be used to read the temperature inside chicks brooder.
 - ***Light_switches:*** A list of light switch entities that control the heating lights.
 - ***Weather_sensor:*** A weather sensor object that measures the outside temperature.
-- ***target_temperature:*** The desired temperature for the chicks (Fahrenheit).
-- ***Temperature_tolerance:*** Allows for departure from the intended temperature before taking action.
+- ***target_temperature:*** The desired temperature for the chicks (Fahrenheit). Once the temperature drops from the desired value, one of the lights (round-robin) will turn on in effort to bring back the temperature to this value.
+- ***Temperature_tolerance:*** This indicates the tolerance level before turning multiple lights at once. 
 - ***overheat_threshold:*** Temperatures exceeding the desired temperature will cause an overheat alarm.
 - ***notification_service:*** The service to utilize to issue notifications.
 - ***check_interval:*** A time interval (in seconds) to determine whether the temperature is rising after turning on all lights.
