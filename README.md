@@ -41,7 +41,7 @@ chicks_temperature_controller:
   check_interval: 300  # Time in seconds to check if temperature is rising (e.g., 300 seconds = 5 minutes)
 ```
 
-### Parameters
+## Parameters
 
 Temperature_sensors: A list of temperature sensor entities.
 Light_switches: A list of light switch entities that control the heating lights.
@@ -52,17 +52,17 @@ overheat_threshold: Temperatures exceeding the desired temperature will cause an
 notification_service: The service to utilize to issue notifications.
 check_interval: A time interval (in seconds) to determine whether the temperature is rising after turning on all lights.
 
-#### Installation
+## Installation
 
 Copy the AppDaemon application: Place the chicks_temperature_control.py file in the AppDaemon applications directory.
 Update Configuration: Include the configuration in your apps.yaml file.
 Reload the AppDaemon: To implement the changes, reload AppDaemon.
 
-#### Usage
+## Usage
 
 Once installed and operating, the app will automatically monitor and manage the lights to keep your chicks at the proper temperature. You will receive messages if the temperature does not rise after turning on all lights, or if the temperature increases over a specified threshold, allowing you to take appropriate action.
 
-### Warnings and Precautions
+## Warnings and Precautions
 
 Attention:
 
