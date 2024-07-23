@@ -6,16 +6,16 @@ The chicks temperature controller is an AppDaemon program that monitors and main
 
 Temperature Monitoring: The app continually monitors the temperature using a set of configurable temperature sensors.
 
-### Temperature Adjustment:
+### Temperature Adjustment
 
-If the temperature drops below the target temperature by a certain tolerance, the app turns on all configured light switches to increase the temperature.
-If the temperature is slightly below the target, it turns on one light switch in a round-robin fashion to evenly distribute heating.
-If the temperature is above the target, it turns off all light switches.
+- If the temperature drops below the target temperature by a certain tolerance, the app turns on all configured light switches to increase the temperature.
+- If the temperature is slightly below the target, it turns on one light switch in a round-robin fashion to evenly distribute heating.
+- If the temperature is above the target, it turns off all light switches.
 
-### Notification System:
+### Notification System
 
-The app sends a notification if the temperature does not rise after turning on all lights, ensuring you are alerted to potential issues.
-The app also sends a notification if the temperature rises above the target temperature by a certain threshold, preventing the chicks from overheating.
+- The app sends a notification if the temperature does not rise after turning on all lights, ensuring you are alerted to potential issues.
+- The app also sends a notification if the temperature rises above the target temperature by a certain threshold, preventing the chicks from overheating.
 
 ## Configuration
 
@@ -25,10 +25,7 @@ To utilize this app, you must configure it in the apps.yaml file. This is an exa
 chicks_temperature_controller:
   module: chicks_temperature_control
   class: ChicksTemperatureControl
-  temperature_sensors:
-    - sensor.chick_coop_temperature_1
-    - sensor.chick_coop_temperature_2
-    # Add more sensors here
+  temperature_sensors: sensor.chick_coop_temperature_1
   light_switches:
     - switch.chick_coop_light_1
     - switch.chick_coop_light_2
@@ -43,7 +40,7 @@ chicks_temperature_controller:
 
 ## Parameters
 
-***Temperature_sensors:*** A list of temperature sensor entities.
+***Temperature_sensors:*** Temperature entity that will be used to read the temperature inside chicken 
 ***Light_switches:*** A list of light switch entities that control the heating lights.
 ***Weather_sensor:*** A weather sensor object that measures the outside temperature.
 ***target_temperature:*** The desired temperature for the chicks (Fahrenheit).
@@ -64,7 +61,7 @@ Once installed and operating, the app will automatically monitor and manage the 
 
 ## Warnings and Precautions
 
-### Attention:
+### Attention
 
 Device Connectivity: Make sure all temperature sensors and light switches have a reliable connection to Home Assistant. If devices disconnect while the lights are turned on, the app may not operate properly, allowing the lights to remain on and overheat the chicks.
 Regular Monitoring: To protect your chicks' safety and well-being, review the app's functioning and device connectivity on a consistent basis.
