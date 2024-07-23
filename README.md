@@ -21,7 +21,7 @@ The app also sends a notification if the temperature rises above the target temp
 
 To utilize this app, you must configure it in the apps.yaml file. This is an example configuration:
 
-```
+```ruby
 chicks_temperature_controller:
   module: chicks_temperature_control
   class: ChicksTemperatureControl
@@ -43,13 +43,13 @@ chicks_temperature_controller:
 
 ## Parameters
 
-****Temperature_sensors:**** A list of temperature sensor entities.\\
+/* ****Temperature_sensors:**** A list of temperature sensor entities.*/
 ****Light_switches:**** A list of light switch entities that control the heating lights.\\
 ****Weather_sensor:**** A weather sensor object that measures the outside temperature.\\
 ****target_temperature:**** The desired temperature for the chicks (Fahrenheit).\\
-****Temperature_tolerance:**** Allows for departure from the intended temperature before taking action.\\
-****overheat_threshold:**** Temperatures exceeding the desired temperature will cause an overheat alarm.\\
-****notification_service:**** The service to utilize to issue notifications.\\
+****Temperature_tolerance:**** Allows for departure from the intended temperature before taking action.\
+****overheat_threshold:**** Temperatures exceeding the desired temperature will cause an overheat alarm.\
+****notification_service:**** The service to utilize to issue notifications.\
 ****check_interval:**** A time interval (in seconds) to determine whether the temperature is rising after turning on all lights.\\
 
 ## Installation
