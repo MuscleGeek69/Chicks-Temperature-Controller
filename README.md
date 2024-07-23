@@ -43,14 +43,14 @@ chicks_temperature_controller:
 
 ## Parameters
 
-/* ****Temperature_sensors:**** A list of temperature sensor entities.*/
-****Light_switches:**** A list of light switch entities that control the heating lights.\\
-****Weather_sensor:**** A weather sensor object that measures the outside temperature.\\
-****target_temperature:**** The desired temperature for the chicks (Fahrenheit).\\
-****Temperature_tolerance:**** Allows for departure from the intended temperature before taking action.\
-****overheat_threshold:**** Temperatures exceeding the desired temperature will cause an overheat alarm.\
-****notification_service:**** The service to utilize to issue notifications.\
-****check_interval:**** A time interval (in seconds) to determine whether the temperature is rising after turning on all lights.\\
+***Temperature_sensors:*** A list of temperature sensor entities.
+***Light_switches:*** A list of light switch entities that control the heating lights.
+***Weather_sensor:*** A weather sensor object that measures the outside temperature.
+***target_temperature:*** The desired temperature for the chicks (Fahrenheit).
+***Temperature_tolerance:*** Allows for departure from the intended temperature before taking action.
+***overheat_threshold:*** Temperatures exceeding the desired temperature will cause an overheat alarm.
+***notification_service:*** The service to utilize to issue notifications.
+***check_interval:*** A time interval (in seconds) to determine whether the temperature is rising after turning on all lights.
 
 ## Installation
 
