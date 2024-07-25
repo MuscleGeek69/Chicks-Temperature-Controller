@@ -30,9 +30,9 @@ chicks_temperature_controller:
     - switch.chick_coop_light_1
     - switch.chick_coop_light_2
     # Add more light switches here
-  target_temperature: 90
+  target_temperature: 90 
   temperature_tolerance: 2
-  overheat_threshold: 5  # Temperature above target to trigger overheat alert
+  overheat_threshold: 5 
   notification_service: notify/mobile_app_user
   check_interval: 300  # Time in seconds to check if temperature is rising (e.g., 300 seconds = 5 minutes)
 ```
