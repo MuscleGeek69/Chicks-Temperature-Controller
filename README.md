@@ -8,14 +8,16 @@ Temperature Monitoring: The app continually monitors the temperature using a set
 
 ### Temperature Adjustment
 
-- If the temperature drops below the target temperature by a certain tolerance, the app turns on all configured light switches to increase the temperature.
-- If the temperature is slightly below the target, it turns on one light switch in a round-robin fashion to evenly distribute heating.
-- If the temperature is above the target, it turns off all light switches.
+- If the temperature drops below the target temperature by a certain tolerance, the app turns on all configured light switches to increase the temperature.  
+- If the temperature is slightly below the target, it turns on one light switch in a round-robin fashion to evenly distribute heating.  
+- If the temperature is above the target, it turns off all light switches.  
+- There will always be one light turned on at night (round-robin) since chiks like to sleep with some warm lighting.  
 
 ### Notification System
 
-- The app sends a notification if the temperature does not rise after turning on all lights, ensuring you are alerted to potential issues.
-- The app also sends a notification if the temperature rises above the target temperature by a certain threshold, preventing the chicks from overheating.
+- The app sends a notification if the temperature does not rise after turning on all lights, ensuring you are alerted to potential issues.  
+- The app also sends a notification if the temperature rises above the target temperature by a certain threshold, preventing the chicks from overheating.  
+- A notification will trigger if any of the light sensors or the temperature sensor becomes unavailable.  
 
 ## Configuration
 

@@ -15,20 +15,35 @@ class ChicksTemperatureControl(hass.Hass):
         self.notification_cooldown = self.args.get("notification_cooldown", 3600)
         self.sun_sensor = "sun.sun"
 
-        self.handle = None
+        self.debounce_handle = None
         self.current_light_index = 0
         self.last_notification_time = None
 
-        self.listen_state(self.check_temperature, self.temperature_sensor)
+        self.listen_state(self.debounce_temperature_check, self.temperature_sensor)
         self.listen_state(self.ensure_night_light, self.sun_sensor)
+        self.listen_state(self.sensor_availability_check, self.temperature_sensor, attribute="state")
+        for light in self.light_switches:
+            self.listen_state(self.sensor_availability_check, light, attribute="state")
+
         self.log("ChicksTemperatureControl initialized")
 
-    async def check_temperature(self, entity, attribute, old, new, kwargs):
+    def debounce_temperature_check(self, entity, attribute, old, new, kwargs):
         if new == old:
             return
 
+        if self.debounce_handle is not None:
+            try:
+                self.cancel_timer(self.debounce_handle)
+            except ValueError:
+                self.log(f"Invalid callback handle '{self.debounce_handle}' in cancel_timer()", level="WARNING")
+            self.debounce_handle = None
+
+        self.debounce_handle = self.run_in(self.check_temperature, 5)
+
+    async def check_temperature(self, kwargs):
         try:
             temp = await self.get_state(self.temperature_sensor, attribute="state")
+            self.log(f"Retrieved temperature from sensor: {temp}")
             if not self.is_number(temp):
                 self.log(f"No valid temperature readings available from {self.temperature_sensor}.", level="WARNING")
                 return
@@ -57,14 +72,16 @@ class ChicksTemperatureControl(hass.Hass):
             return False
 
     async def turn_on_all_lights(self):
-        await asyncio.gather(*[self.turn_on(light) for light in self.light_switches])
+        for light in self.light_switches:
+            await self.turn_on(light)
 
     async def turn_off_all_lights(self):
         sun_state = await self.get_state(self.sun_sensor)
         if sun_state == "below_horizon":
             await self.turn_off_one_light()
         else:
-            await asyncio.gather(*[self.turn_off(light) for light in self.light_switches])
+            for light in self.light_switches:
+                await self.turn_off(light)
 
     async def turn_off_one_light(self):
         if self.current_light_index >= len(self.light_switches):
@@ -79,8 +96,10 @@ class ChicksTemperatureControl(hass.Hass):
         self.current_light_index += 1
 
     async def notify_overheat(self, current_temperature):
-        message = f"Warning: Overheat detected! Current temperature is {current_temperature}°F."
-        await self.call_service(self.notification_service, message=message)
+        if self.last_notification_time is None or (datetime.now() - self.last_notification_time).total_seconds() > self.notification_cooldown:
+            message = f"Warning: Overheat detected! Current temperature is {current_temperature}°F."
+            await self.call_service(self.notification_service, message=message)
+            self.last_notification_time = datetime.now()
 
     async def ensure_night_light(self, entity, attribute, old, new, kwargs):
         if new == "below_horizon":
@@ -90,3 +109,8 @@ class ChicksTemperatureControl(hass.Hass):
         light_states = await asyncio.gather(*(self.get_state(light) for light in self.light_switches))
         if not any(state == "on" for state in light_states):
             await self.turn_on_one_light()
+
+    async def sensor_availability_check(self, entity, attribute, old, new, kwargs):
+        if new == "unavailable":
+            message = f"Warning: Sensor {entity} is unavailable."
+            await self.call_service(self.notification_service, message=message)
