@@ -25,8 +25,6 @@ class ChicksTemperatureControl(hass.Hass):
         for light in self.light_switches:
             self.listen_state(self.sensor_availability_check, light, attribute="state")
 
-        self.log("ChicksTemperatureControl initialized")
-
     def debounce_temperature_check(self, entity, attribute, old, new, kwargs):
         if new == old:
             return
@@ -35,17 +33,15 @@ class ChicksTemperatureControl(hass.Hass):
             try:
                 self.cancel_timer(self.debounce_handle)
             except ValueError:
-                self.log(f"Invalid callback handle '{self.debounce_handle}' in cancel_timer()", level="WARNING")
+                pass
             self.debounce_handle = None
 
-        self.debounce_handle = self.run_in(self.check_temperature, 5)
+        self.debounce_handle = self.run_in(self.check_temperature, 2)  # Reduced debounce time
 
     async def check_temperature(self, kwargs):
         try:
             temp = await self.get_state(self.temperature_sensor, attribute="state")
-            self.log(f"Retrieved temperature from sensor: {temp}")
             if not self.is_number(temp):
-                self.log(f"No valid temperature readings available from {self.temperature_sensor}.", level="WARNING")
                 return
 
             current_temperature = float(temp)
@@ -61,8 +57,8 @@ class ChicksTemperatureControl(hass.Hass):
             if current_temperature > self.target_temperature + self.overheat_threshold:
                 await self.notify_overheat(current_temperature)
 
-        except (TypeError, ValueError) as e:
-            self.log(f"Error reading temperature: {e}", level="ERROR")
+        except (TypeError, ValueError):
+            pass
 
     def is_number(self, s):
         try:
@@ -72,16 +68,16 @@ class ChicksTemperatureControl(hass.Hass):
             return False
 
     async def turn_on_all_lights(self):
-        for light in self.light_switches:
-            await self.turn_on(light)
+        tasks = [self.turn_on(light) for light in self.light_switches]
+        await asyncio.gather(*tasks)
 
     async def turn_off_all_lights(self):
         sun_state = await self.get_state(self.sun_sensor)
         if sun_state == "below_horizon":
             await self.turn_off_one_light()
         else:
-            for light in self.light_switches:
-                await self.turn_off(light)
+            tasks = [self.turn_off(light) for light in self.light_switches]
+            await asyncio.gather(*tasks)
 
     async def turn_off_one_light(self):
         if self.current_light_index >= len(self.light_switches):
